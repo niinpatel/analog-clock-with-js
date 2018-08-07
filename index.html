@@ -18,6 +18,8 @@
         canvas.width = canvasLength;
         let ctx = canvas.getContext("2d");
         ctx.font = `${0.1 * radius}px Georgia`;
+        ctx.textAlign = "center"
+        ctx.textBaseline = "middle"
 
         // complex calculation to determine at what co-ordinates each hand is drawn
         function drawHand(ctx, angleInDegrees, r) {
