@@ -6,78 +6,78 @@
 </head>
 
 <body>
-    <canvas id="canvas">
-
-    </canvas>
+    <div align="center">
+        <h1>Analog Clock</h1>
+        <canvas id="canvas"></canvas>
+    </div>
     <script>
-        let canvasLength = 800
+        let canvasLength = 850;  // length of entire canvas, you can set any value for this
+        let radius = canvasLength / 2;  // radius of circle is half the length of canvas
 
-        function setArrowPosition(ctx, degrees, r) {
-            let a = r * Math.cos(degrees * Math.PI / 180)
-            let b = r * Math.sin(degrees * Math.PI / 180)
-            ctx.lineTo(a, b)
+        // complex calculation to determine at what co-ordinates each hand is drawn
+        function setArrowPosition(ctx, angleInDegrees, r) {
+            let a = r * Math.cos(angleInDegrees * Math.PI / 180);
+            let b = r * Math.sin(angleInDegrees * Math.PI / 180);
+            ctx.lineTo(a, b);
         }
 
         function drawClock() {
-            let canvas = document.getElementById('canvas')
-            canvas.height = canvasLength
-            canvas.width = canvasLength
-            let ctx = canvas.getContext('2d')
+            let canvas = document.getElementById("canvas");
+            canvas.height = canvasLength;
+            canvas.width = canvasLength;
+            let ctx = canvas.getContext("2d");
 
             // draw outer circle
-            ctx.arc(400, 400, 400, 0, 2 * Math.PI);
-            ctx.stroke()
+            ctx.arc(radius, radius, radius, 0, 2 * Math.PI);
+            ctx.stroke();
 
-            // set 400, 400 ie center of canvas as 0,0
-            ctx.translate(400, 400)
+            // set the center of canvas as 0,0
+            ctx.translate(radius, radius);
 
             // draw numbers 1 to 12 on outer circle
-            ctx.font = "30px Georgia"
+            ctx.font = `${0.1 * radius}px Georgia`;
             for (let i = 1; i <= 12; i++) {
-                ctx.fillText(i, 375 * Math.cos((i * 30 - 90) * Math.PI / 180), 375 * Math.sin((i * 30 - 90) * Math.PI / 180))
+                let x = radius * 0.9 * Math.cos(((i * 30 - 90) * Math.PI) / 180)
+                let y = radius * 0.9 * Math.sin(((i * 30 - 90) * Math.PI) / 180)
+                ctx.fillText(i, x, y);
             }
 
-
             // get current time
-            let currentTime = new Date()
-            let seconds = currentTime.getSeconds()
-            let minutes = currentTime.getMinutes()
-            let hours = currentTime.getHours()
+            let currentTime = new Date();
+            let seconds = currentTime.getSeconds();
+            let minutes = currentTime.getMinutes();
+            let hours = currentTime.getHours();
 
             // determine the number of degree of angle in which each clock hand is there
-            let secondsDegrees = (seconds - 15) * 6
-            let minutesDegrees = (minutes - 15 + seconds / 60) * 6
-            let hoursDegrees = (hours - 3 + minutes / 60) * 30
+            let secondsDegrees = (seconds - 15) * 6;
+            let minutesDegrees = (minutes - 15) * 6;
+            let hoursDegrees = (hours - 3 + minutes / 60) * 30;
 
             // drawing clock hands
-            ctx.beginPath()
+            ctx.beginPath();
 
             // second hand
-            ctx.moveTo(0, 0)
-            setArrowPosition(ctx, secondsDegrees, 300)
+            ctx.moveTo(0, 0);
+            setArrowPosition(ctx, secondsDegrees, radius * 0.75); // second hand is 0.75 times of radius
 
             // minute hand
-            ctx.moveTo(0, 0)
-            setArrowPosition(ctx, minutesDegrees, 350)
+            ctx.moveTo(0, 0);
+            setArrowPosition(ctx, minutesDegrees, radius * 0.85); // second hand is 0.85 times of radius
 
             // hour hand
-            ctx.moveTo(0, 0)
-            setArrowPosition(ctx, hoursDegrees, 200)
+            ctx.moveTo(0, 0);
+            setArrowPosition(ctx, hoursDegrees, radius * 0.6); // hour hand is 0.7 times of radius
 
-            ctx.stroke()
-            ctx.closePath()
+            ctx.stroke();
+            ctx.closePath();
 
             // fill center with dark black color
             ctx.arc(0, 0, 5, 0, 2 * Math.PI, false);
-            ctx.fill()
+            ctx.fill();
         }
 
-        window.onload = setInterval(drawClock, 1000)
-
-
+        window.onload = setInterval(drawClock, 1000);
     </script>
-
-
 </body>
 
 </html>
